@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: smart
+
+employee:
+  salary-raise:
+    categories:
+      - year-limit: 10
+        percent: 50
+      - year-limit: 50
+        percent: 50
+      - year-limit: 2.5
+        percent: 2
+    base: #for SmartEmployeeService
+      percent: 0
+    default-raise: #for DefaultEmployeeService
+      percent: 5
