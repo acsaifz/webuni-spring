@@ -1,6 +1,5 @@
 package hu.webuni.hr.acsaifz;
 
-import hu.webuni.hr.acsaifz.config.EmployeeConfigProperties;
 import hu.webuni.hr.acsaifz.model.Employee;
 import hu.webuni.hr.acsaifz.service.SalaryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +30,12 @@ public class HrApplication implements CommandLineRunner {
                 new Employee(4L, "Jane Doe", 10_000, LocalDate.of(2022,11,15))
         );
 
-        System.out.println("Before:\n" + employees);
+        System.out.println("\nBefore:");
+        employees.forEach(System.out::println);
 
         employees.forEach(e -> salaryService.raiseSalary(e));
 
-        System.out.println("After:\n" + employees);
+        System.out.println("\nAfter:");
+        employees.forEach(System.out::println);
     }
 }
