@@ -4,6 +4,7 @@ spring:
 
 employee:
   salary-raise:
+    #for SmartEmployeeService
     categories:
       - year-limit: 10
         percent: 50
@@ -11,7 +12,8 @@ employee:
         percent: 50
       - year-limit: 2.5
         percent: 2
-    base: #for SmartEmployeeService
+    base:
       percent: 0
-    default-raise: #for DefaultEmployeeService
+    #for DefaultEmployeeService
+    default-raise:
       percent: 5
