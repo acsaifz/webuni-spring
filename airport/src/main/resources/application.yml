@@ -1,0 +1,11 @@
+spring:
+  profiles:
+    active: prod
+
+airport:
+  discount:
+    def:
+      percent: 10
+    special:
+      percent: 15
+      limit: 10000
