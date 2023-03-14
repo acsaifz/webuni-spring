@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Airport application</title>
+</head>
+<body>
+  <h1>List of airports</h1>
+  <ul>
+    <li th:each="airport: ${airports}">
+      <span th:text="${airport.id}"></span>
+      <span th:text="${airport.name}"></span>
+      <span th:text="${airport.iata}"></span>
+    </li>
+  </ul>
+
+  <form th:action="@{/airports}" method="post" th:object="${newAirport}">
+    <label th:field="*{id}">Id: </label><input type="text" th:field="*{id}" /><br>
+    <label th:field="*{name}">Name: </label><input type="text" th:field="*{name}" /><br>
+    <label th:field="*{iata}">Iata: </label><input type="text" th:field="*{iata}" /><br>
+    <button type="submit">Add</button>
+  </form>
+</body>
+</html>

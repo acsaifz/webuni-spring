@@ -1,6 +1,8 @@
 spring:
   profiles:
     active: prod
+  thymeleaf:
+    cache: false
 
 airport:
   discount:
