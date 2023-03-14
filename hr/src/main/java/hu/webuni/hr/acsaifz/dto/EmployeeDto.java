@@ -1,18 +1,17 @@
-package hu.webuni.hr.acsaifz.model;
+package hu.webuni.hr.acsaifz.dto;
 
 import java.time.LocalDate;
 
-public class Employee {
+public class EmployeeDto {
     private Long id;
     private String name;
     private int monthlySalary;
     private LocalDate entryDate;
 
-    public Employee(){
-
+    public EmployeeDto() {
     }
 
-    public Employee(Long id, String name, int monthlySalary, LocalDate entryDate) {
+    public EmployeeDto(Long id, String name, int monthlySalary, LocalDate entryDate) {
         this.id = id;
         this.name = name;
         this.monthlySalary = monthlySalary;
@@ -49,16 +48,5 @@ public class Employee {
 
     public void setEntryDate(LocalDate entryDate) {
         this.entryDate = entryDate;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("Employee{");
-        sb.append("id=").append(id);
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", monthlySalary=").append(monthlySalary);
-        sb.append(", entryDate=").append(entryDate);
-        sb.append('}');
-        return sb.toString();
     }
 }
