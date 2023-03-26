@@ -4,6 +4,7 @@ import hu.webuni.hr.acsaifz.model.Employee;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDate;
@@ -12,13 +13,13 @@ import java.util.Map;
 
 @Controller
 public class EmployeeTLController {
-    private long nextEmployeeId = 1L;
+    private Long nextEmployeeId = 1L;
     private final Map<Long, Employee> employees = new HashMap<>();
 
     {
-        employees.put(nextEmployeeId, new Employee(nextEmployeeId++, "John Doe", 10_000,
+        employees.put(nextEmployeeId, new Employee(nextEmployeeId++, "John Doe", "Engineer", 10_000,
                 LocalDate.of(2023,1,15)));
-        employees.put(nextEmployeeId, new Employee(nextEmployeeId++, "Jane Doe", 15_000,
+        employees.put(nextEmployeeId, new Employee(nextEmployeeId++, "Jane Doe", "Manager", 15_000,
                 LocalDate.of(2018,5,19)));
     }
 
@@ -41,6 +42,25 @@ public class EmployeeTLController {
         employee.setId(nextEmployeeId);
         employees.put(nextEmployeeId++, employee);
 
+        return "redirect:/employees";
+    }
+
+    @GetMapping("/employees/{id}")
+    public String showEmployee(@PathVariable Long id, Model model){
+        Employee employee = employees.get(id);
+        model.addAttribute("employee", employee);
+        return "employees-edit";
+    }
+
+    @PostMapping("/employees/{id}")
+    public String editEmployee(@PathVariable Long id, Employee employee){
+        employees.put(id,employee);
+        return "redirect:/employees/" + id + "?edit=success";
+    }
+
+    @PostMapping("/employees/{id}/delete")
+    public String deleteEmployeeById(@PathVariable Long id){
+        employees.remove(id);
         return "redirect:/employees";
     }
 }

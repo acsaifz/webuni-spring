@@ -5,6 +5,7 @@ import java.time.LocalDate;
 public class Employee {
     private Long id;
     private String name;
+    private String jobTitle;
     private int monthlySalary;
     private LocalDate entryDate;
 
@@ -12,9 +13,10 @@ public class Employee {
 
     }
 
-    public Employee(Long id, String name, int monthlySalary, LocalDate entryDate) {
+    public Employee(Long id, String name, String jobTitle, int monthlySalary, LocalDate entryDate) {
         this.id = id;
         this.name = name;
+        this.jobTitle = jobTitle;
         this.monthlySalary = monthlySalary;
         this.entryDate = entryDate;
     }
@@ -33,6 +35,14 @@ public class Employee {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
     }
 
     public int getMonthlySalary() {
@@ -56,6 +66,7 @@ public class Employee {
         final StringBuilder sb = new StringBuilder("Employee{");
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
+        sb.append(", jobTitle='").append(jobTitle).append('\'');
         sb.append(", monthlySalary=").append(monthlySalary);
         sb.append(", entryDate=").append(entryDate);
         sb.append('}');

@@ -24,10 +24,10 @@ public class HrApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         List<Employee> employees = List.of(
-                new Employee(1L, "John Doe", 10_000, LocalDate.of(2013,3,6)),
-                new Employee(2L, "Jack Doe", 10_000, LocalDate.of(2018,1,15)),
-                new Employee(3L, "Sarah Doe", 10_000, LocalDate.of(2020,7,1)),
-                new Employee(4L, "Jane Doe", 10_000, LocalDate.of(2022,11,15))
+                new Employee(1L, "John Doe", "Engineer", 10_000, LocalDate.of(2013,3,6)),
+                new Employee(2L, "Jack Doe", "Engineer", 10_000, LocalDate.of(2018,1,15)),
+                new Employee(3L, "Sarah Doe", "Manager", 10_000, LocalDate.of(2020,7,1)),
+                new Employee(4L, "Jane Doe", "Technician", 10_000, LocalDate.of(2022,11,15))
         );
 
         System.out.println("\nBefore:");

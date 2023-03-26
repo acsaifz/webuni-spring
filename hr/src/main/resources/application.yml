@@ -1,8 +1,11 @@
 spring:
   profiles:
-    active: smart
+    active: default
   thymeleaf:
     cache: false
+  mvc:
+    format:
+      date: iso
 
 employee:
   salary-raise:

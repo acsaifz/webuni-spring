@@ -15,9 +15,9 @@ public class EmployeeController {
     private final Map<Long, EmployeeDto> employees = new HashMap<>();
 
     {
-        employees.put(nextEmployeeId, new EmployeeDto(nextEmployeeId++, "John Doe", 10_000,
+        employees.put(nextEmployeeId, new EmployeeDto(nextEmployeeId++, "John Doe", "Assistant",10_000,
                 LocalDate.of(2023,1,15)));
-        employees.put(nextEmployeeId, new EmployeeDto(nextEmployeeId++, "Jane Doe", 15_000,
+        employees.put(nextEmployeeId, new EmployeeDto(nextEmployeeId++, "Jane Doe", "Engineer",15_000,
                 LocalDate.of(2018,5,19)));
     }
 
