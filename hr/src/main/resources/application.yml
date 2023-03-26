@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: default
+    active: smart
   thymeleaf:
     cache: false
   mvc:
