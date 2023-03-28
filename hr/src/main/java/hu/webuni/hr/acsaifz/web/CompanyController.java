@@ -91,16 +91,12 @@ public class CompanyController {
             return ResponseEntity.notFound().build();
         }
 
-        Optional<EmployeeDto> employeeDto = companyDto.getEmployees()
-                .stream()
-                .filter(e -> e.getId() == employeeId)
-                .findFirst();
+        boolean employeeIsRemoved = companyDto.getEmployees()
+                .removeIf(e -> e.getId() == employeeId);
 
-        if (employeeDto.isEmpty()){
+        if (employeeIsRemoved){
             return ResponseEntity.notFound().build();
         }
-
-        companyDto.getEmployees().remove(employeeDto.get());
 
         return ResponseEntity.ok(companyDto);
     }
