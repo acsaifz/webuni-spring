@@ -2,16 +2,10 @@ server:
   error:
     include-message: always
 
-spring:
-  profiles:
-    active: prod
-  thymeleaf:
-    cache: false
-
 airport:
   discount:
     def:
-      percent: 20
+      percent: 10
     special:
       percent: 15
       limit: 10000
