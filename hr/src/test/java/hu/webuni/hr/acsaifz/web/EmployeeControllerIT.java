@@ -11,7 +11,6 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 class EmployeeControllerIT extends AbstractIntegrationTest {
     private final static String BASE_URL = "/api/employees";
 
@@ -213,7 +212,6 @@ class EmployeeControllerIT extends AbstractIntegrationTest {
         //THEN
         actualResponse.expectStatus().isNotFound();
     }
-
 
     private EmployeeDto createDummyEmployee() {
         return doPostWithBody(BASE_URL, employeeDto)
