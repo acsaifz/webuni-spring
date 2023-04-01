@@ -55,9 +55,4 @@ public abstract class AbstractEmployeeService implements EmployeeService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
-
-    @Override
-    public void delete(List<Employee> employees) {
-
-    }
 }

@@ -18,5 +18,4 @@ public interface EmployeeService {
 
     void delete(long id);
 
-    void delete(List<Employee> employees);
 }
