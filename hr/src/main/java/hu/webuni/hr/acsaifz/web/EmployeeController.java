@@ -1,70 +1,61 @@
 package hu.webuni.hr.acsaifz.web;
 
 import hu.webuni.hr.acsaifz.dto.EmployeeDto;
+import hu.webuni.hr.acsaifz.mapper.EmployeeMapper;
+import hu.webuni.hr.acsaifz.model.Employee;
+import hu.webuni.hr.acsaifz.service.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/employees")
-public class EmployeeController {
-    private long nextEmployeeId = 1L;
-    private final Map<Long, EmployeeDto> employees = new HashMap<>();
-
-    {
-        employees.put(nextEmployeeId, new EmployeeDto(nextEmployeeId++, "John Doe", "Assistant",10_000,
-                LocalDate.of(2023,1,15)));
-        employees.put(nextEmployeeId, new EmployeeDto(nextEmployeeId++, "Jane Doe", "Engineer",15_000,
-                LocalDate.of(2018,5,19)));
-    }
+public record EmployeeController(
+        EmployeeService employeeService,
+        EmployeeMapper employeeMapper
+) {
 
     @GetMapping
     public List<EmployeeDto> getAll(@RequestParam(required = false) Optional<Integer> minSalary){
-        return minSalary.map(min -> employees.values().stream()
-                        .filter(e -> e.getMonthlySalary() > min)
-                        .collect(Collectors.toList()))
-                .orElseGet(() -> new ArrayList<>(employees.values()));
+
+        return employeeMapper.employeesToDtos(
+                minSalary.map(employeeService::findAllBySalaryGreaterThan).orElseGet(employeeService::findAll)
+        );
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<EmployeeDto> getById(@PathVariable Long id){
-        EmployeeDto employeeDto = employees.get(id);
+    public EmployeeDto getById(@PathVariable Long id){
 
-        if (employeeDto == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(employeeDto);
+        return employeeMapper.employeeToDto(
+                employeeService.findById(id)
+        );
     }
 
     @PostMapping
-    public ResponseEntity<EmployeeDto> createEmployee(@RequestBody EmployeeDto employeeDto){
-        employeeDto.setId(nextEmployeeId);
-        employees.put(nextEmployeeId++, employeeDto);
+    public EmployeeDto createEmployee(@Valid @RequestBody EmployeeDto employeeDto){
+        Employee employee = employeeMapper.dtoToEmployee(employeeDto);
 
-        return ResponseEntity.ok(employeeDto);
+        return employeeMapper.employeeToDto(
+                employeeService.save(employee)
+        );
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EmployeeDto> modifyEmployee(@RequestBody EmployeeDto employeeDto, @PathVariable Long id){
-        if (!employees.containsKey(id)){
-            return ResponseEntity.notFound().build();
-        }
-
+    public EmployeeDto modifyEmployee(@Valid @RequestBody EmployeeDto employeeDto, @PathVariable Long id){
         employeeDto.setId(id);
-        employees.put(id, employeeDto);
+        Employee employee = employeeMapper.dtoToEmployee(employeeDto);
 
-        return ResponseEntity.ok(employeeDto);
+        return employeeMapper.employeeToDto(
+                employeeService.save(employee)
+        );
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long id){
-        if (employees.remove(id) == null){
-            return ResponseEntity.notFound().build();
-        }
+        employeeService.delete(id);
 
         return ResponseEntity.noContent().build();
     }

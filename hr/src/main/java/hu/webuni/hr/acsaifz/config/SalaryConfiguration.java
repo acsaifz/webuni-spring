@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Profile;
 public class SalaryConfiguration {
 
     @Bean
-    public EmployeeService employeeService(){
-        return new DefaultEmployeeService();
+    public EmployeeService employeeService(EmployeeConfigProperties config){
+        return new DefaultEmployeeService(config);
     }
 }

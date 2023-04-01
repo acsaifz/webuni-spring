@@ -2,7 +2,6 @@ package hu.webuni.hr.acsaifz.service;
 
 import hu.webuni.hr.acsaifz.config.EmployeeConfigProperties;
 import hu.webuni.hr.acsaifz.model.Employee;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -10,9 +9,13 @@ import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
 
 @Service
-public class SmartEmployeeService implements EmployeeService {
-    @Autowired
-    private EmployeeConfigProperties config;
+public class SmartEmployeeService extends AbstractEmployeeService {
+
+    private final EmployeeConfigProperties config;
+
+    public SmartEmployeeService(EmployeeConfigProperties config) {
+        this.config = config;
+    }
 
     @Override
     public int getPayRaisePercent(Employee employee) {

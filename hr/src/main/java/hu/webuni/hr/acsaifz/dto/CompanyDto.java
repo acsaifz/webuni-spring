@@ -1,6 +1,7 @@
 package hu.webuni.hr.acsaifz.dto;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +10,13 @@ public class CompanyDto {
     @JsonView(Views.BaseCompanyData.class)
     private Long id;
     @JsonView(Views.BaseCompanyData.class)
+    @NotBlank
     private String registrationNumber;
     @JsonView(Views.BaseCompanyData.class)
+    @NotBlank
     private String name;
     @JsonView(Views.BaseCompanyData.class)
+    @NotBlank
     private String address;
     private List<EmployeeDto> employees = new ArrayList<>();
 

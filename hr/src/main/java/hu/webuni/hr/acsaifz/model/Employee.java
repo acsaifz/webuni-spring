@@ -3,29 +3,34 @@ package hu.webuni.hr.acsaifz.model;
 import java.time.LocalDate;
 
 public class Employee {
-    private Long id;
+    private long id;
     private String name;
     private String jobTitle;
     private int monthlySalary;
     private LocalDate entryDate;
+    private Company company;
 
     public Employee(){
 
     }
 
-    public Employee(Long id, String name, String jobTitle, int monthlySalary, LocalDate entryDate) {
-        this.id = id;
+    public Employee(String name, String jobTitle, int monthlySalary, LocalDate entryDate){
         this.name = name;
         this.jobTitle = jobTitle;
         this.monthlySalary = monthlySalary;
         this.entryDate = entryDate;
     }
 
-    public Long getId() {
+    public Employee(long id, String name, String jobTitle, int monthlySalary, LocalDate entryDate) {
+        this(name, jobTitle, monthlySalary, entryDate);
+        this.id = id;
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -60,6 +65,7 @@ public class Employee {
     public void setEntryDate(LocalDate entryDate) {
         this.entryDate = entryDate;
     }
+
 
     @Override
     public String toString() {

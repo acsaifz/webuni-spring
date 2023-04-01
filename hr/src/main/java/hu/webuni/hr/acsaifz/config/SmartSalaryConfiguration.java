@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Profile;
 public class SmartSalaryConfiguration {
 
     @Bean
-    public EmployeeService employeeService(){
-        return new SmartEmployeeService();
+    public EmployeeService employeeService(EmployeeConfigProperties config){
+        return new SmartEmployeeService(config);
     }
 }
