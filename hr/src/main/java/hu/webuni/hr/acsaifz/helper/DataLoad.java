@@ -10,10 +10,14 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 
 @Component
-public record DataLoad(
-        EmployeeService employeeService,
-        CompanyService companyService
-) implements CommandLineRunner {
+public class DataLoad implements CommandLineRunner {
+    private final EmployeeService employeeService;
+    private final CompanyService companyService;
+
+    public DataLoad(EmployeeService employeeService, CompanyService companyService) {
+        this.employeeService = employeeService;
+        this.companyService = companyService;
+    }
 
     @Override
     public void run(String... args) throws Exception {

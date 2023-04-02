@@ -13,10 +13,14 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/employees")
-public record EmployeeController(
-        EmployeeService employeeService,
-        EmployeeMapper employeeMapper
-) {
+public class EmployeeController {
+    private final EmployeeService employeeService;
+    private final EmployeeMapper employeeMapper;
+
+    public EmployeeController(EmployeeService employeeService, EmployeeMapper employeeMapper) {
+        this.employeeService = employeeService;
+        this.employeeMapper = employeeMapper;
+    }
 
     @GetMapping
     public List<EmployeeDto> getAll(@RequestParam(required = false) Optional<Integer> minSalary){

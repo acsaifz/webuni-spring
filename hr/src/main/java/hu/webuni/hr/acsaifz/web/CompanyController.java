@@ -18,11 +18,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/companies")
-public record CompanyController(
-        CompanyService companyService,
-        CompanyMapper companyMapper,
-        EmployeeMapper employeeMapper
-) {
+public class CompanyController {
+    private final CompanyService companyService;
+    private final CompanyMapper companyMapper;
+    private final EmployeeMapper employeeMapper;
+
+    public CompanyController(CompanyService companyService, CompanyMapper companyMapper, EmployeeMapper employeeMapper) {
+        this.companyService = companyService;
+        this.companyMapper = companyMapper;
+        this.employeeMapper = employeeMapper;
+    }
 
     @GetMapping
     @JsonView(Views.BaseCompanyData.class)
