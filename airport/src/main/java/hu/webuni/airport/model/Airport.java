@@ -1,6 +1,15 @@
 package hu.webuni.airport.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQuery;
+
+@Entity
+@NamedQuery(name = "Airport.countByIata", query = "SELECT COUNT(a.id) FROM Airport a WHERE a.iata = :iata AND a.id != :id")
 public class Airport {
+    @Id
+    @GeneratedValue
     private long id;
     private String name;
     private String iata;
@@ -8,10 +17,14 @@ public class Airport {
     public Airport() {
     }
 
-    public Airport(long id, String name, String iata) {
-        this.id = id;
+    public Airport(String name, String iata){
         this.name = name;
         this.iata = iata;
+    }
+
+    public Airport(long id, String name, String iata) {
+        this(name, iata);
+        this.id = id;
     }
 
     public long getId() {
