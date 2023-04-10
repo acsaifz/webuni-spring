@@ -2,6 +2,7 @@ package hu.webuni.hr.acsaifz.service;
 
 import hu.webuni.hr.acsaifz.config.EmployeeConfigProperties;
 import hu.webuni.hr.acsaifz.model.Employee;
+import hu.webuni.hr.acsaifz.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -13,7 +14,8 @@ public class SmartEmployeeService extends AbstractEmployeeService {
 
     private final EmployeeConfigProperties config;
 
-    public SmartEmployeeService(EmployeeConfigProperties config) {
+    public SmartEmployeeService(EmployeeConfigProperties config, EmployeeRepository employeeRepository) {
+        super(employeeRepository);
         this.config = config;
     }
 

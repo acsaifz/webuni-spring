@@ -10,6 +10,8 @@ public interface EmployeeService {
 
     Employee save(Employee employee);
 
+    List<Employee> saveAll(List<Employee> employees);
+
     List<Employee> findAll();
 
     List<Employee> findAllBySalaryGreaterThan(int minSalary);
@@ -17,5 +19,7 @@ public interface EmployeeService {
     Employee findById(long id);
 
     void delete(long id);
+
+    Employee update(Employee employee);
 
 }

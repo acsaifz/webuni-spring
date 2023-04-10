@@ -1,13 +1,20 @@
 package hu.webuni.hr.acsaifz.model;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
+@Entity
 public class Employee {
+    @Id
+    @GeneratedValue
     private long id;
     private String name;
     private String jobTitle;
     private int monthlySalary;
     private LocalDate entryDate;
+    @ManyToOne
+    @JoinColumn(name = "company_id")
     private Company company;
 
     public Employee(){
@@ -66,6 +73,13 @@ public class Employee {
         this.entryDate = entryDate;
     }
 
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
 
     @Override
     public String toString() {

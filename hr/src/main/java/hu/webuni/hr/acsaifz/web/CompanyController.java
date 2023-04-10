@@ -60,7 +60,7 @@ public class CompanyController {
 
 
         return companyMapper.companyToDto(
-                companyService.save(company)
+                companyService.update(company)
         );
     }
 

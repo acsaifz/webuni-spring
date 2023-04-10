@@ -2,8 +2,11 @@ package hu.webuni.hr.acsaifz.web;
 
 import hu.webuni.hr.acsaifz.AbstractIntegrationTest;
 import hu.webuni.hr.acsaifz.dto.EmployeeDto;
+import hu.webuni.hr.acsaifz.repository.EmployeeRepository;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.reactive.server.WebTestClient.ResponseSpec;
 
 import java.time.LocalDate;
@@ -16,10 +19,18 @@ class EmployeeControllerIT extends AbstractIntegrationTest {
 
     private EmployeeDto employeeDto;
 
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
     @BeforeEach
     void init(){
         employeeDto = new EmployeeDto("Skywalker Lajos", "Jedi", 1_500_000,
                 LocalDate.of(2000, 5,17));
+    }
+
+    @AfterEach()
+    void tearDown(){
+        employeeRepository.deleteAll();
     }
 
     @Test

@@ -12,6 +12,8 @@ public interface CompanyService {
 
     Company findById(long id);
 
+    Company update(Company company);
+
     void delete(long id);
 
     Company addEmployeeForCompany(Employee employee, long id);
@@ -19,4 +21,6 @@ public interface CompanyService {
     Company deleteEmployeeFromCompany(long employeeId, long companyId);
 
     Company replaceEmployeesOfCompany(List<Employee> employees, long companyId);
+
+    long count();
 }

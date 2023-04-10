@@ -1,58 +1,58 @@
 package hu.webuni.hr.acsaifz.service;
 
+import hu.webuni.hr.acsaifz.exception.ResourceNotFoundException;
 import hu.webuni.hr.acsaifz.model.Employee;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
+import hu.webuni.hr.acsaifz.repository.EmployeeRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
 public abstract class AbstractEmployeeService implements EmployeeService {
-    protected AtomicLong employeeIdGenerator = new AtomicLong();
-    protected final Map<Long, Employee> employees = new HashMap<>();
+    private final EmployeeRepository employeeRepository;
+
+    protected AbstractEmployeeService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
     @Override
     public Employee save(Employee employee){
-        if (employee.getId() < 1){
-            employee.setId(employeeIdGenerator.incrementAndGet());
-        } else if (!employees.containsKey(employee.getId())) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
+        return employeeRepository.save(employee);
+    }
 
-        employees.put(employee.getId(), employee);
-        return employee;
+    @Override
+    public List<Employee> saveAll(List<Employee> employees) {
+        return employeeRepository.saveAll(employees);
     }
 
     @Override
     public List<Employee> findAll(){
-        return new ArrayList<>(employees.values());
+        return employeeRepository.findAll();
     }
 
     @Override
     public List<Employee> findAllBySalaryGreaterThan(int minSalary){
-        return findAll().stream()
-                .filter(e -> e.getMonthlySalary() > minSalary)
-                .toList();
+        return employeeRepository.findAllByMonthlySalaryGreaterThan(minSalary);
     }
 
     @Override
     public Employee findById(long id) {
-        Employee employee = employees.get(id);
-
-        if (employee == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-
-        return employee;
+        return employeeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Employee", "id", id));
     }
 
     @Override
     public void delete(long id) {
-        if (employees.remove(id) == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        if (employeeRepository.existsById(id)){
+            employeeRepository.deleteById(id);
+        } else {
+            throw new ResourceNotFoundException("Employee", "id", id);
+        }
+    }
+
+    @Override
+    public Employee update(Employee employee) {
+        if (employeeRepository.existsById(employee.getId())){
+            return save(employee);
+        } else {
+            throw new ResourceNotFoundException("Employee", "id", employee.getId());
         }
     }
 }

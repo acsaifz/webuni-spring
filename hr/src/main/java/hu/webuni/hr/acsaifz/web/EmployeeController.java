@@ -53,7 +53,7 @@ public class EmployeeController {
         Employee employee = employeeMapper.dtoToEmployee(employeeDto);
 
         return employeeMapper.employeeToDto(
-                employeeService.save(employee)
+                employeeService.update(employee)
         );
     }
 

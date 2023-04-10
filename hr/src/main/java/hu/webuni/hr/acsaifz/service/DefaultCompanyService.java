@@ -1,87 +1,95 @@
 package hu.webuni.hr.acsaifz.service;
 
+import hu.webuni.hr.acsaifz.exception.ResourceNotFoundException;
 import hu.webuni.hr.acsaifz.model.Company;
 import hu.webuni.hr.acsaifz.model.Employee;
-import org.springframework.http.HttpStatus;
+import hu.webuni.hr.acsaifz.repository.CompanyRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class DefaultCompanyService implements CompanyService {
-    private final AtomicLong employeeIdGenerator = new AtomicLong();
-    private final AtomicLong companyIdGenerator = new AtomicLong();
-    private final Map<Long, Company> companies = new HashMap<>();
+
+    private final CompanyRepository companyRepository;
+    private final EmployeeService employeeService;
+
+    public DefaultCompanyService(CompanyRepository companyRepository,
+                                 EmployeeService employeeService) {
+        this.companyRepository = companyRepository;
+        this.employeeService = employeeService;
+    }
 
     @Override
     public Company save(Company company) {
-        if (company.getId() < 1){
-            company.setId(companyIdGenerator.incrementAndGet());
-        } else if (!companies.containsKey(company.getId())){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        }
-
-        companies.put(company.getId(), company);
-
-        return company;
+        return companyRepository.save(company);
     }
 
     @Override
     public List<Company> findAll() {
-        return new ArrayList<>(companies.values());
+        return companyRepository.findAll();
     }
 
     @Override
     public Company findById(long id) {
-        Company company = companies.get(id);
+        return companyRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Company", "id", id));
+    }
 
-        if (company == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    @Override
+    public Company update(Company company){
+        if (!companyRepository.existsById(company.getId())){
+            throw new ResourceNotFoundException("Company", "id", company.getId());
         }
 
-        return company;
+        return save(company);
     }
 
     @Override
     public void delete(long id) {
-        if (companies.remove(id) == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        if(companyRepository.existsById(id)){
+            companyRepository.deleteById(id);
+        } else {
+            throw new ResourceNotFoundException("Company", "id", id);
         }
     }
 
     @Override
+    @Transactional
     public Company addEmployeeForCompany(Employee employee, long id) {
         Company company = findById(id);
-        employee.setId(employeeIdGenerator.incrementAndGet());
         company.addEmployee(employee);
 
-        return company;
+        return save(company);
     }
 
     @Override
+    @Transactional
     public Company deleteEmployeeFromCompany(long employeeId, long companyId) {
         Company company = findById(companyId);
+        Employee employee = employeeService.findById(employeeId);
 
-        if(!company.getEmployees().removeIf(e -> e.getId() == employeeId)){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        if (!company.removeEmployee(employee)) {
+            throw new ResourceNotFoundException("Employee", "companyId and employeeId", companyId + " and " + employeeId);
         }
 
-        return company;
+        return save(company);
     }
 
     @Override
+    @Transactional
     public Company replaceEmployeesOfCompany(List<Employee> employees, long companyId) {
         Company company = findById(companyId);
+        company.clearEmployees();
+        //If not saving employees before company then save them twice
+        company.addEmployees(employeeService.saveAll(employees));
+        //company.addEmployees(employees);
+        return companyRepository.save(company);
+    }
 
-        employees.forEach(e -> e.setId(employeeIdGenerator.incrementAndGet()));
-
-        company.setEmployees(employees);
-
-        return company;
+    @Override
+    public long count(){
+        return companyRepository.count();
     }
 }

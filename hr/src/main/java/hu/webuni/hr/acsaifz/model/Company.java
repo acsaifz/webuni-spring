@@ -1,15 +1,21 @@
 package hu.webuni.hr.acsaifz.model;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Company {
+    @Id
+    @GeneratedValue
     private long id;
     private String registrationNumber;
 
     private String name;
 
     private String address;
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<Employee> employees = new ArrayList<>();
 
     public Company() {
@@ -28,6 +34,21 @@ public class Company {
 
     public void addEmployee(Employee employee){
         employees.add(employee);
+        employee.setCompany(this);
+    }
+
+    public void addEmployees(List<Employee> employees){
+        employees.forEach(this::addEmployee);
+    }
+
+    public boolean removeEmployee(Employee employee){
+        employee.setCompany(null);
+        return employees.remove(employee);
+    }
+
+    public void clearEmployees(){
+        employees.forEach(e -> e.setCompany(null));
+        employees.clear();
     }
 
     public long getId() {
